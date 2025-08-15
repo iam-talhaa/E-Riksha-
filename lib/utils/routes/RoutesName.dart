@@ -1,4 +1,5 @@
 class Routesname {
   static const String Splash = 'Splash';
-  static const String HomeScreen = 'HomeScreen';
+  static const String RoleSelection = 'RoleSelection';
+  static const String PassengerHome = 'PassengerHome';
 }

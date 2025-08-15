@@ -1,8 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+
     <application
         android:label="e_riksha"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyD3UoJ0vpEEcn8jQ4R9yHEzqHVye9oRr3E"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -1,11 +1,25 @@
 import 'package:e_riksha/utils/routes/RoutesName.dart';
+import 'package:e_riksha/view/Passenger/PassengerScreenMap.dart';
+import 'package:e_riksha/view/RoleSectionScreen.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
-  // static Route<dynamic> generateRoute(RouteSettings settings) {
-  //   switch(settings.name){
-  //     case Routesname.HomeScreen:
-  //       return MaterialPageRoute(builder: (context)=> HomeScreen());
-  //   }
-  // }
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case Routesname.RoleSelection:
+        return MaterialPageRoute(builder: (context) => Rolesectionscreen());
+      case Routesname.PassengerHome:
+        return MaterialPageRoute(
+          builder: (context) => const Passengerscreenmap(),
+        );  
+      default:
+        return MaterialPageRoute(
+          builder: (Context) {
+            return const Scaffold(
+              body: Center(child: Text('No route defined for ')),
+            );
+          },
+        );
+    }
+  }
 }

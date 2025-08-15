@@ -1,3 +1,6 @@
+import 'package:e_riksha/utils/routes/Routes.dart';
+import 'package:e_riksha/utils/routes/RoutesName.dart';
+import 'package:e_riksha/view/Passenger/PassengerScreenMap.dart';
 import 'package:e_riksha/view/RoleSectionScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +18,10 @@ class E_riksha extends StatefulWidget {
 class _E_rikshaState extends State<E_riksha> {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: Rolesectionscreen());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: Routesname.PassengerHome,
+      onGenerateRoute: Routes.generateRoute,
+    );
   }
 }
