@@ -41,6 +41,8 @@ dependencies:
   google_maps_flutter: ^2.12.3
   geocoding: ^4.0.0
   geolocator: ^14.0.2
+  google_places_flutter: ^2.1.0
+  firebase_core: ^4.0.0
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +88,7 @@ flutter:
     - assets/icons/camera.png
     - assets/icons/car.png
     - assets/icons/car2.png
+    - assets/icons/blackpin.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

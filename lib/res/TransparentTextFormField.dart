@@ -3,13 +3,17 @@ import 'dart:ui';
 
 class UpdatableGlassTextFormField extends StatefulWidget {
   final String hintText;
+  bool enabled = true;
   final Widget prefixIcon;
   final Color borderColor;
   final TextEditingController? controller;
   final Function(String)? onChanged;
+  
 
-  const UpdatableGlassTextFormField({
+  UpdatableGlassTextFormField({
+    
     Key? key,
+    this.enabled = true,
     required this.hintText,
     required this.prefixIcon,
     required this.borderColor,
@@ -73,6 +77,7 @@ class _UpdatableGlassTextFormFieldState
               fontWeight: FontWeight.w400,
             ),
             decoration: InputDecoration(
+              enabled: widget.enabled,
               border: InputBorder.none,
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,

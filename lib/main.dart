@@ -1,15 +1,20 @@
+import 'package:e_riksha/firebase_options.dart';
 import 'package:e_riksha/utils/routes/Routes.dart';
 import 'package:e_riksha/utils/routes/RoutesName.dart';
 import 'package:e_riksha/view/Passenger/PassengerScreenMap.dart';
 import 'package:e_riksha/view/RoleSectionScreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const E_riksha());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(E_riksha());
 }
 
 class E_riksha extends StatefulWidget {
-  const E_riksha({super.key});
+  E_riksha({super.key});
 
   @override
   State<E_riksha> createState() => _E_rikshaState();
