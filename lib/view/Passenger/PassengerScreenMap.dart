@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:e_riksha/res/GlassmorphicContainer.dart';
-import 'package:e_riksha/res/MapApiKey.dart';
 import 'package:e_riksha/res/TransparentTextFormField.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -23,8 +22,8 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
   double currentLat = 0.0;
   double currentLon = 0.0;
 
-  String? _searchedLat;
-  String? _searchedLon;
+  double? _searchedLat;
+  double? _searchedLon;
 
   CameraPosition? _initialCameraPosition; // nullable at start
   Completer<GoogleMapController> _controller = Completer();
@@ -149,6 +148,30 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
                 ],
               ),
             ),
+
+            IconButton(
+              icon: Icon(Icons.send),
+              onPressed: () async {
+                final GoogleMapController controller = await _controller.future;
+
+                controller.moveCamera(
+                  CameraUpdate.newCameraPosition(
+                    CameraPosition(
+                      target: LatLng(_searchedLat!, _searchedLon!),
+                      zoom: 14,
+                    ),
+                  ),
+                );
+                setState(() {
+                  _listOfMarkers.add(
+                    Marker(
+                      markerId: MarkerId('New Location'),
+                      position: LatLng(_searchedLat!, _searchedLon!),
+                    ),
+                  );
+                });
+              },
+            ),
           ],
         ),
       ),
@@ -224,8 +247,8 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
             getPlaceDetailWithLatLng: (Prediction prediction) {
               print("Lat: ${prediction.lat}, Lng: ${prediction.lng}");
               setState(() {
-                _searchedLat = prediction.lat;
-                _searchedLon = prediction.lng;
+                _searchedLat = double.parse(prediction.lat.toString());
+                _searchedLon = double.parse(prediction.lng.toString());
                 ModeCameraToCurrentLocation();
               });
             },
