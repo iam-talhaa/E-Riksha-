@@ -17,38 +17,37 @@ class Passengerscreenmap extends StatefulWidget {
 }
 
 class _PassengerscreenmapState extends State<Passengerscreenmap> {
+  //
   TextEditingController _searchController = TextEditingController();
 
+  //  Currrent Location
   double currentLat = 0.0;
   double currentLon = 0.0;
 
-  double? _searchedLat;
-  double? _searchedLon;
+  // Search Location
+  double _searchedLat = 0.0;
+  double _searchedLon = 0.0;
 
+  //initial Camera Postiion
   CameraPosition? _initialCameraPosition; // nullable at start
   Completer<GoogleMapController> _controller = Completer();
 
-  final List<Marker> _makers = [
-    Marker(markerId: MarkerId('2'), position: LatLng(34.0105556, 71.7963889)),
-    Marker(markerId: MarkerId('3'), position: LatLng(34.011, 71.796)),
-    Marker(markerId: MarkerId('4'), position: LatLng(34.00968, 71.79445)),
-    Marker(markerId: MarkerId('5'), position: LatLng(34.0095421, 71.8037638)),
-    Marker(markerId: MarkerId('6'), position: LatLng(34.0113944, 71.7941607)),
-    Marker(markerId: MarkerId('7'), position: LatLng(34.0106, 71.7975)),
-    Marker(markerId: MarkerId('8'), position: LatLng(34.0098, 71.7952)),
-    Marker(markerId: MarkerId('9'), position: LatLng(34.0102, 71.7991)),
-    Marker(markerId: MarkerId('10'), position: LatLng(34.0111, 71.7980)),
-  ];
+  //Marker That will be shown on map
+  final List<Marker> _makers = [];
 
+  // Marker will be add in this List
   List<Marker> _listOfMarkers = [];
+
+  //polyline
 
   @override
   void initState() {
     super.initState();
-    _listOfMarkers.addAll(_makers);
-    _loadCurrentLocation(); // fetch location once on startup
+    _listOfMarkers.addAll(_makers); //
+    _loadCurrentLocation(); // When app Start Current location Access
   }
 
+  // Load Current Location
   Future<void> _loadCurrentLocation() async {
     Position pos = await _setCurrentLocation();
 
@@ -60,6 +59,7 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
     });
   }
 
+  // return Current Postion pos=  LatLng
   Future<Position> _setCurrentLocation() async {
     // Step 1: request permission
     LocationPermission permission = await Geolocator.requestPermission();
@@ -108,7 +108,10 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  placesAutoCompleteTextField(context),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: placesAutoCompleteTextField(context),
+                  ),
 
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -149,28 +152,32 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
               ),
             ),
 
-            IconButton(
-              icon: Icon(Icons.send),
-              onPressed: () async {
-                final GoogleMapController controller = await _controller.future;
+            Positioned(
+              right: 10,
+              child: IconButton(
+                icon: Icon(Icons.send),
+                onPressed: () async {
+                  final GoogleMapController controller =
+                      await _controller.future;
 
-                controller.moveCamera(
-                  CameraUpdate.newCameraPosition(
-                    CameraPosition(
-                      target: LatLng(_searchedLat!, _searchedLon!),
-                      zoom: 14,
-                    ),
-                  ),
-                );
-                setState(() {
-                  _listOfMarkers.add(
-                    Marker(
-                      markerId: MarkerId('New Location'),
-                      position: LatLng(_searchedLat!, _searchedLon!),
+                  controller.moveCamera(
+                    CameraUpdate.newCameraPosition(
+                      CameraPosition(
+                        target: LatLng(_searchedLat!, _searchedLon!),
+                        zoom: 14,
+                      ),
                     ),
                   );
-                });
-              },
+                  setState(() {
+                    _listOfMarkers.add(
+                      Marker(
+                        markerId: MarkerId('New Location'),
+                        position: LatLng(_searchedLat!, _searchedLon!),
+                      ),
+                    );
+                  });
+                },
+              ),
             ),
           ],
         ),
@@ -221,7 +228,7 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
               ),
             ],
           ),
-          padding: EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+          padding: EdgeInsets.symmetric(vertical: 4),
           child: GooglePlaceAutoCompleteTextField(
             textEditingController: _searchController,
             googleAPIKey: "AIzaSyD3UoJ0vpEEcn8jQ4R9yHEzqHVye9oRr3E",
@@ -235,7 +242,7 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
               filled: true,
               hintText: "Search your location...",
               hintStyle: TextStyle(
-                color: Colors.white.withOpacity(0.7),
+                color: Colors.black.withOpacity(0.7),
                 fontSize: 16,
                 fontWeight: FontWeight.w300,
               ),
