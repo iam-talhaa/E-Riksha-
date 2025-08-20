@@ -28,6 +28,13 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
   double _searchedLat = 0.0;
   double _searchedLon = 0.0;
 
+  //
+  List<LatLng> _latlng = [];
+
+  //Polyline
+
+  final Set<Polyline> _polyline = {};
+
   //initial Camera Postiion
   CameraPosition? _initialCameraPosition; // nullable at start
   Completer<GoogleMapController> _controller = Completer();
@@ -45,6 +52,8 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
     super.initState();
     _listOfMarkers.addAll(_makers); //
     _loadCurrentLocation(); // When app Start Current location Access
+
+    print('SET STATE CHECK :$currentLat And $currentLon');
   }
 
   // Load Current Location
@@ -58,6 +67,8 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
       );
     });
   }
+
+
 
   // return Current Postion pos=  LatLng
   Future<Position> _setCurrentLocation() async {
@@ -86,6 +97,8 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
 
   @override
   Widget build(BuildContext context) {
+    print('BUILD CHECKING  :$currentLat And $currentLon');
+
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -95,6 +108,7 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
                   _initialCameraPosition == null
                       ? const Center(child: CircularProgressIndicator())
                       : GoogleMap(
+                        polylines: _polyline,
                         markers: Set<Marker>.of(_listOfMarkers),
                         initialCameraPosition: _initialCameraPosition!,
                         onMapCreated: (GoogleMapController controller) {
@@ -203,7 +217,7 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5), // 👈 Glass blur
         child: Container(
-          height: 50,
+          height: 65,
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
@@ -247,8 +261,12 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
                 fontWeight: FontWeight.w300,
               ),
               border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
             ),
 
             getPlaceDetailWithLatLng: (Prediction prediction) {
@@ -361,16 +379,7 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
                       onChanged: (String) {},
                     ),
                     SizedBox(height: 5),
-                    UpdatableGlassTextFormField(
-                      hintText: 'DIstination',
-                      prefixIcon: Icon(
-                        Icons.search_sharp,
-                        color: Colors.blueGrey.withOpacity(0.7),
-                      ),
-                      borderColor: Colors.blueGrey,
-                      controller: null,
-                      onChanged: (String) {},
-                    ),
+                    placesAutoCompleteTextField(context),
 
                     const SizedBox(height: 16),
                     // ElevatedButton(

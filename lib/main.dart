@@ -25,7 +25,7 @@ class _E_rikshaState extends State<E_riksha> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: Routesname.PolylinesScreen,
+      initialRoute: Routesname.PassengerHome,
       onGenerateRoute: Routes.generateRoute,
     );
   }

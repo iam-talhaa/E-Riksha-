@@ -10,12 +10,12 @@ class Routes {
     switch (settings.name) {
       case Routesname.RoleSelection:
         return MaterialPageRoute(builder: (context) => Rolesectionscreen());
-      case Routesname.PolylinesScreen:
-        return MaterialPageRoute(
-          builder:
-              (context) =>
-                  RoutesApiMapScreen(apiKey: myGoogleMapApiKey.GoogleMapApiKey),
-        );
+      // case Routesname.PolylinesScreen:
+      //   return MaterialPageRoute(
+      //     builder:
+      //         (context) =>
+      //             RoutesApiMapScreen(apiKey: myGoogleMapApiKey.GoogleMapApiKey),
+      //   );
       case Routesname.PassengerHome:
         return MaterialPageRoute(
           builder: (context) => const Passengerscreenmap(),
