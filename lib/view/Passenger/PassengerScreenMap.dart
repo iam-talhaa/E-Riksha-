@@ -61,6 +61,7 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
     Position pos = await _setCurrentLocation();
 
     setState(() {
+      print("Load C");
       _initialCameraPosition = CameraPosition(
         target: LatLng(pos.latitude, pos.longitude),
         zoom: 14,
