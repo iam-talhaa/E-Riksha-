@@ -1,5 +1,6 @@
 import 'package:e_riksha/res/MapApiKey.dart';
 import 'package:e_riksha/utils/routes/RoutesName.dart';
+import 'package:e_riksha/view/Driver/Driver_map.dart';
 import 'package:e_riksha/view/Passenger/PassengerScreenMap.dart';
 import 'package:e_riksha/view/Passenger/RoutePolylineScreen.dart';
 import 'package:e_riksha/view/RoleSectionScreen.dart';
@@ -10,12 +11,12 @@ class Routes {
     switch (settings.name) {
       case Routesname.RoleSelection:
         return MaterialPageRoute(builder: (context) => Rolesectionscreen());
-      // case Routesname.PolylinesScreen:
-      //   return MaterialPageRoute(
-      //     builder:
-      //         (context) =>
-      //             RoutesApiMapScreen(apiKey: myGoogleMapApiKey.GoogleMapApiKey),
-      //   );
+      case Routesname.DiverMapScreen:
+        return MaterialPageRoute(
+          builder:
+              (context) =>
+                  MapScreen(),
+        );
       case Routesname.PassengerHome:
         return MaterialPageRoute(
           builder: (context) => const Passengerscreenmap(),

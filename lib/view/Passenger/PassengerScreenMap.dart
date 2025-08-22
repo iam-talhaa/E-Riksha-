@@ -445,142 +445,213 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
   }
 
   Widget placesAutoCompleteTextField(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5), // 👈 Glass blur
-        child: Container(
-          height: 65,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.white.withOpacity(0.25), // glass highlight
-                Colors.white.withOpacity(0.05), // deeper transparent
-              ],
-            ),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.3), // subtle border
-              width: 1.2,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.blueAccent.withOpacity(0.2), // glowing shadow
-                blurRadius: 30,
-                spreadRadius: 2,
-                offset: const Offset(0, 10),
-              ),
-            ],
-          ),
-          padding: EdgeInsets.symmetric(vertical: 7),
-          child: GooglePlaceAutoCompleteTextField(
-            textEditingController: _searchController,
-            googleAPIKey: _googleApiKey,
-            debounceTime: 400,
-            countries: ["pk"], // restrict to Pakistan 🇵🇰
-            isLatLngRequired: true,
-
-            inputDecoration: InputDecoration(
-              prefixIcon: Icon(Icons.search, color: Colors.blueGrey),
-              fillColor: Colors.transparent,
-              filled: true,
-              hintText: "Search your destination...",
-              hintStyle: TextStyle(
-                color: Colors.black.withOpacity(0.7),
-                fontSize: 16,
-                fontWeight: FontWeight.w300,
-              ),
-              border: InputBorder.none,
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-
-            getPlaceDetailWithLatLng: (Prediction prediction) {
-              print(
-                "Destination - Lat: ${prediction.lat}, Lng: ${prediction.lng}",
-              );
-              setState(() {
-                _searchedLat = double.parse(prediction.lat.toString());
-                _searchedLon = double.parse(prediction.lng.toString());
-
-                // Clear existing destination markers
-                _listOfMarkers.removeWhere(
-                  (marker) => marker.markerId.value == 'destination',
-                );
-
-                // Add destination marker
-                _listOfMarkers.add(
-                  Marker(
-                    markerId: const MarkerId('destination'),
-                    position: LatLng(_searchedLat, _searchedLon),
-                    infoWindow: InfoWindow(
-                      title: 'Destination',
-                      snippet: prediction.description ?? '',
-                    ),
-                    icon: BitmapDescriptor.defaultMarkerWithHue(
-                      BitmapDescriptor.hueRed,
-                    ),
-                  ),
-                );
-
-                // Get directions and show polyline
-                _getDirections();
-              });
-            },
-
-            itemClick: (Prediction prediction) {
-              _searchController.text = prediction.description ?? "";
-              _searchController.selection = TextSelection.fromPosition(
-                TextPosition(offset: prediction.description?.length ?? 0),
-              );
-            },
-
-            seperatedBuilder: Divider(color: Colors.white24),
-            containerHorizontalPadding: 10,
-
-            itemBuilder: (context, index, Prediction prediction) {
-              return Container(
-                padding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+    return Container(
+      height: 60,
+      width: double.infinity,
+      child: Stack(
+        children: [
+          // Liquid blur background
+          ClipRRect(
+            borderRadius: BorderRadius.circular(
+              10,
+            ), // Super rounded like liquid
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 25,
+                sigmaY: 25,
+              ), // Heavy blur for liquid effect
+              child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1), // 👈 soft transparent
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: Colors.blueGrey.withOpacity(0.3), // subtle border
-                    width: 1,
+                  borderRadius: BorderRadius.circular(35),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Colors.white.withOpacity(0.15), // Subtle glass highlight
+                      Colors.white.withOpacity(0.05), // Almost transparent
+                      Colors.grey.withOpacity(0.02), // Hint of depth
+                    ],
                   ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.location_on, color: Colors.white70, size: 20),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        prediction.description ?? "",
-                        style: TextStyle(
-                          color: Colors.blueGrey,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        maxLines: 1,
-                        overflow:
-                            TextOverflow.ellipsis, // prevent long overflow
-                      ),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.1), // Ultra-subtle border
+                    width: 0.5,
+                  ),
+                  boxShadow: [
+                    // Soft ambient shadow
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 40,
+                      spreadRadius: 0,
+                      offset: const Offset(0, 8),
+                    ),
+                    // Inner glow effect
+                    BoxShadow(
+                      color: Colors.white.withOpacity(0.1),
+                      blurRadius: 10,
+                      spreadRadius: -5,
+                      offset: const Offset(0, -1),
                     ),
                   ],
                 ),
-              );
-            },
-
-            isCrossBtnShown: true,
+              ),
+            ),
           ),
-        ),
+          // Content layer
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: GooglePlaceAutoCompleteTextField(
+              textEditingController: _searchController,
+              googleAPIKey: _googleApiKey,
+              debounceTime: 400,
+              countries: ["usa"],
+              isLatLngRequired: true,
+
+              inputDecoration: InputDecoration(
+                prefixIcon: Container(
+                  margin: EdgeInsets.all(12),
+                  child: Icon(
+                    Icons.search_rounded,
+                    color: Colors.black.withOpacity(0.6),
+                    size: 22,
+                  ),
+                ),
+                fillColor: Colors.transparent,
+                filled: true,
+                hintText: "Search your destination...",
+                hintStyle: TextStyle(
+                  color: Colors.black.withOpacity(0.5),
+                  fontSize: 17,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0.3,
+                ),
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 20,
+                ),
+              ),
+
+              getPlaceDetailWithLatLng: (Prediction prediction) {
+                print(
+                  "Destination - Lat: ${prediction.lat}, Lng: ${prediction.lng}",
+                );
+                setState(() {
+                  _searchedLat = double.parse(prediction.lat.toString());
+                  _searchedLon = double.parse(prediction.lng.toString());
+
+                  // Clear existing destination markers
+                  _listOfMarkers.removeWhere(
+                    (marker) => marker.markerId.value == 'destination',
+                  );
+
+                  // Add destination marker
+                  _listOfMarkers.add(
+                    Marker(
+                      markerId: const MarkerId('destination'),
+                      position: LatLng(_searchedLat, _searchedLon),
+                      infoWindow: InfoWindow(
+                        title: 'Destination',
+                        snippet: prediction.description ?? '',
+                      ),
+                      icon: BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueRed,
+                      ),
+                    ),
+                  );
+
+                  // Get directions and show polyline
+                  _getDirections();
+                });
+              },
+
+              itemClick: (Prediction prediction) {
+                _searchController.text = prediction.description ?? "";
+                _searchController.selection = TextSelection.fromPosition(
+                  TextPosition(offset: prediction.description?.length ?? 0),
+                );
+              },
+
+              seperatedBuilder: Container(
+                height: 1,
+                margin: EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.transparent,
+                      Colors.grey.withOpacity(0.1),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+              ),
+              containerHorizontalPadding: 0,
+
+              itemBuilder: (context, index, Prediction prediction) {
+                return Container(
+                  margin: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 16,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(
+                            0.08,
+                          ), // Ultra-light tint
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.08),
+                            width: 0.5,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Icon(
+                                Icons.location_on_rounded,
+                                color: Colors.black.withOpacity(0.6),
+                                size: 18,
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: Text(
+                                prediction.description ?? "",
+                                style: TextStyle(
+                                  color: Colors.black.withOpacity(0.8),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 0.2,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+
+              isCrossBtnShown: true,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -600,7 +671,7 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15), // 👈 glass blur
             child: Container(
-              height: 300,
+              height: 400,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.vertical(

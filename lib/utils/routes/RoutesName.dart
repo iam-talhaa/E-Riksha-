@@ -3,4 +3,5 @@ class Routesname {
   static const String RoleSelection = 'RoleSelection';
   static const String PassengerHome = 'PassengerHome';
   static const String PolylinesScreen = 'PolylinesScreen';
+  static const String DiverMapScreen = 'DriverMapScreen';
 }
