@@ -1,8 +1,6 @@
 import 'package:e_riksha/firebase_options.dart';
 import 'package:e_riksha/utils/routes/Routes.dart';
 import 'package:e_riksha/utils/routes/RoutesName.dart';
-import 'package:e_riksha/view/Passenger/PassengerScreenMap.dart';
-import 'package:e_riksha/view/RoleSectionScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
