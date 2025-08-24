@@ -47,6 +47,7 @@ dependencies:
   cloud_firestore: ^6.0.0
   flutter_polyline_points: ^3.0.1
   flutter_google_places_sdk: ^0.4.2+1
+  firebase_database: ^12.0.0
 
 dev_dependencies:
   flutter_test:

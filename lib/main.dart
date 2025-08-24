@@ -24,10 +24,9 @@ class E_riksha extends StatefulWidget {
 class _E_rikshaState extends State<E_riksha> {
   @override
   Widget build(BuildContext context) {
-    print('Main Screen Called');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: Routesname.PassengerHome,
+      initialRoute: Routesname.DriverBasicInfo,
       onGenerateRoute: Routes.generateRoute,
     );
   }

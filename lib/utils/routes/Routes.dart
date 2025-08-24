@@ -21,6 +21,10 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) => const Passengerscreenmap(),
         );
+      case Routesname.DriverBasicInfo:
+        return MaterialPageRoute(
+          builder: (context) => const Passengerscreenmap(),
+        );  
       default:
         return MaterialPageRoute(
           builder: (Context) {
