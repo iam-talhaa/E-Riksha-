@@ -1,5 +1,6 @@
 import 'package:e_riksha/res/MapApiKey.dart';
 import 'package:e_riksha/utils/routes/RoutesName.dart';
+import 'package:e_riksha/view/Driver/Driver_Information/driverBasicInfo.dart';
 import 'package:e_riksha/view/Driver/Driver_map.dart';
 import 'package:e_riksha/view/Passenger/PassengerScreenMap.dart';
 import 'package:e_riksha/view/Passenger/RoutePolylineScreen.dart';
@@ -23,7 +24,7 @@ class Routes {
         );
       case Routesname.DriverBasicInfo:
         return MaterialPageRoute(
-          builder: (context) => const Passengerscreenmap(),
+          builder: (context) => const DriverBasicInformation(),
         );  
       default:
         return MaterialPageRoute(
