@@ -1,6 +1,10 @@
 import 'dart:async';
 
+import 'package:another_flushbar/flushbar_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class DriverBasicInformation extends StatefulWidget {
@@ -11,39 +15,81 @@ class DriverBasicInformation extends StatefulWidget {
 }
 
 class _DriverBasicInformationState extends State<DriverBasicInformation> {
-  double _driverLat = 0.0;
-  double _driverLng = 0.0;
+  final driverfirestore = FirebaseFirestore.instance.collection(
+    'drivers_locations',
+  );
+
+  void updateDriverLocation() async {
+    String driverId = Timestamp.now().millisecondsSinceEpoch.toString();
+    await driverfirestore
+        .doc(driverId)
+        .set({
+          "lat": _driverCurrentlat,
+          "lng": _driverCurrentLng,
+          "isOnline": true,
+          "lastUpdated": FieldValue.serverTimestamp(),
+        })
+        .then((v) {
+          print("Driver Added Successfulyy ");
+        })
+        .onError((error, s) {
+          print("ERROR IS $error");
+        });
+  }
+
+  CameraPosition? _initialCameraPosition;
+  double _driverCurrentlat = 0.0;
+  double _driverCurrentLng = 0.0;
+
+  Future<void> _getCurrentLocationOfDriver() async {
+    Position pos = await _getcurrentlatlng();
+
+    setState(() {
+      _initialCameraPosition = CameraPosition(
+        target: LatLng(pos.latitude, pos.longitude),
+        zoom: 14,
+      );
+    });
+  }
+
+  Future<Position> _getcurrentlatlng() async {
+    LocationPermission locationPermission =
+        await Geolocator.requestPermission();
+
+    Position pos = await Geolocator.getCurrentPosition();
+
+    setState(() {
+      _driverCurrentlat = pos.latitude;
+      _driverCurrentLng = pos.longitude;
+
+      print("DRIVER LAT $_driverCurrentlat");
+      print("DRIVER LNG $_driverCurrentLng");
+      _listofMarker.add(
+        Marker(
+          markerId: const MarkerId('Driver'),
+          position: LatLng(_driverCurrentlat, _driverCurrentLng),
+          infoWindow: const InfoWindow(title: 'Driver Current Location'),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+        ),
+      );
+    });
+
+    return pos;
+  }
 
   bool isDriverOnline = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _listofMarker.addAll(_marker);
+
+    _getCurrentLocationOfDriver();
   }
 
-  final List<Marker> _marker = [
-    Marker(
-      markerId: MarkerId('My location'),
-      position: LatLng(34.0097, 34.0097),
-      icon: BitmapDescriptor.defaultMarker,
-      infoWindow: InfoWindow(title: 'MY Current location'),
-    ),
-  ];
+  final List<Marker> _marker = [];
 
   final List<Marker> _listofMarker = [];
 
-  final _googleMapController = GoogleMapController;
-
-  final _cameraPosition = CameraPosition(
-    zoom: 14,
-    target: LatLng(34.0097, 34.0097),
-  );
-
-  CameraPosition _initialCameraPosition = CameraPosition(
-    target: LatLng(34.0097, 71.8047),
-    zoom: 14,
-  );
   Completer<GoogleMapController> _controller = Completer();
   @override
   Widget build(BuildContext context) {
@@ -67,11 +113,21 @@ class _DriverBasicInformationState extends State<DriverBasicInformation> {
           ),
         ],
       ),
-      body: GoogleMap(
-        markers: Set<Marker>.of(_listofMarker),
-        initialCameraPosition: _initialCameraPosition!,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
+      body:
+          _initialCameraPosition == null
+              ? const Center(
+                child: CircularProgressIndicator(),
+              ) // 👈 show loader
+              : GoogleMap(
+                markers: Set<Marker>.of(_listofMarker),
+                initialCameraPosition: _initialCameraPosition!,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+              ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          updateDriverLocation();
         },
       ),
     );

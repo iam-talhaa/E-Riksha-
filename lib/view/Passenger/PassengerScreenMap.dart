@@ -145,9 +145,7 @@ class _PassengerscreenmapState extends State<Passengerscreenmap> {
 
     String origin = '$currentLat,$currentLon';
     String destination = '$_searchedLat,$_searchedLon';
-    print('POlyline Current Origin = $currentLat and $currentLon');
-    print('POlyline Search Origin = $_searchedLat and $_searchedLon');
-
+   
     String url =
         'https://maps.googleapis.com/maps/api/directions/json'
         '?origin=$origin'

@@ -9,8 +9,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  SampleDataService sampleService = SampleDataService();
-  await sampleService.addSampleDrivers();
+  // SampleDataService sampleService = SampleDataService();
+  // await sampleService.addSampleDrivers();
   runApp(E_riksha());
 }
 
@@ -26,7 +26,7 @@ class _E_rikshaState extends State<E_riksha> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: Routesname.DriverBasicInfo,
+      initialRoute: Routesname.PassengerHome,
       onGenerateRoute: Routes.generateRoute,
     );
   }

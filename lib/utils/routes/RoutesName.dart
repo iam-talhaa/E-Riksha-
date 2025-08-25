@@ -5,4 +5,5 @@ class Routesname {
   static const String PolylinesScreen = 'PolylinesScreen';
   static const String DiverMapScreen = 'DriverMapScreen';
   static const String DriverBasicInfo = 'DriverBasicInfo';
+  static const String PassengerTestScreen = 'PassengerTestScreen';
 }

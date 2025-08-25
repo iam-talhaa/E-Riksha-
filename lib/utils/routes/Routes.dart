@@ -1,5 +1,6 @@
 import 'package:e_riksha/res/MapApiKey.dart';
 import 'package:e_riksha/utils/routes/RoutesName.dart';
+import 'package:e_riksha/view/Driver/Driver_Information/PassengerTestScreen.dart';
 import 'package:e_riksha/view/Driver/Driver_Information/driverBasicInfo.dart';
 import 'package:e_riksha/view/Driver/Driver_map.dart';
 import 'package:e_riksha/view/Passenger/PassengerScreenMap.dart';
@@ -13,11 +14,7 @@ class Routes {
       case Routesname.RoleSelection:
         return MaterialPageRoute(builder: (context) => Rolesectionscreen());
       case Routesname.DiverMapScreen:
-        return MaterialPageRoute(
-          builder:
-              (context) =>
-                  MapScreen(),
-        );
+        return MaterialPageRoute(builder: (context) => MapScreen());
       case Routesname.PassengerHome:
         return MaterialPageRoute(
           builder: (context) => const Passengerscreenmap(),
@@ -25,7 +22,11 @@ class Routes {
       case Routesname.DriverBasicInfo:
         return MaterialPageRoute(
           builder: (context) => const DriverBasicInformation(),
-        );  
+        );
+      case Routesname.PassengerTestScreen:
+        return MaterialPageRoute(
+          builder: (context) => const PassengerTestScreen(),
+        );
       default:
         return MaterialPageRoute(
           builder: (Context) {
